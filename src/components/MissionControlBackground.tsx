@@ -65,44 +65,56 @@ const PARALLAX_SPEEDS = {
 
 // ─── HELPER FUNCTIONS ───────────────────────────────────────────────────────────
 
+// Seeded PRNG for deterministic random values (avoids hydration mismatch)
+function seededRandom(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+}
+
 function generateStars(count: number): DeepSpaceStar[] {
+  const rand = seededRandom(42);
   const stars: DeepSpaceStar[] = [];
   for (let i = 0; i < count; i++) {
     stars.push({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 0.5 + Math.random() * 1.5,
-      baseOpacity: 0.2 + Math.random() * 0.5,
-      twinkleSpeed: 0.3 + Math.random() * 0.7,
-      twinkleOffset: Math.random() * Math.PI * 2,
+      x: rand() * 100,
+      y: rand() * 100,
+      size: 0.5 + rand() * 1.5,
+      baseOpacity: 0.2 + rand() * 0.5,
+      twinkleSpeed: 0.3 + rand() * 0.7,
+      twinkleOffset: rand() * Math.PI * 2,
     });
   }
   return stars;
 }
 
 function generateSatellites(count: number): Satellite[] {
+  const rand = seededRandom(123);
   const satellites: Satellite[] = [];
   for (let i = 0; i < count; i++) {
     satellites.push({
       pathIndex: i % 5,
-      progress: Math.random(),
-      speed: 0.0003 + Math.random() * 0.0004, // 20-40s per pass
-      size: 2 + Math.random() * 1.5,
-      opacity: 0.3 + Math.random() * 0.4,
+      progress: rand(),
+      speed: 0.0003 + rand() * 0.0004, // 20-40s per pass
+      size: 2 + rand() * 1.5,
+      opacity: 0.3 + rand() * 0.4,
     });
   }
   return satellites;
 }
 
 function generateTelemetry(count: number): TelemetryStream[] {
+  const rand = seededRandom(456);
   const streams: TelemetryStream[] = [];
   for (let i = 0; i < count; i++) {
     streams.push({
-      x: 5 + Math.random() * 90,
-      y: Math.random() * 100,
-      text: TELEMETRY_STRINGS[Math.floor(Math.random() * TELEMETRY_STRINGS.length)],
+      x: 5 + rand() * 90,
+      y: rand() * 100,
+      text: TELEMETRY_STRINGS[Math.floor(rand() * TELEMETRY_STRINGS.length)],
       opacity: 0,
-      speed: 0.002 + Math.random() * 0.003,
+      speed: 0.002 + rand() * 0.003,
       fadeDirection: 'in',
     });
   }

@@ -130,23 +130,23 @@ function EarthVisualization({
           <circle cx="250" cy="250" r="140" />
         </clipPath>
 
-        {/* Orbit paths as reusable paths */}
+        {/* Orbit paths - rotation baked into start/end points, no transform attribute */}
+        {/* LEO: rx=185, ry=75, rotated -20deg. Two-arc full ellipse */}
         <path
           id="leoOrbitPath"
-          d="M 65,250 A 185,75 -20 1,1 65,250.01"
-          transform="rotate(-20 250 250)"
+          d="M 435,250 A 185,75 -20 1,1 65,250 A 185,75 -20 1,1 435,250"
           fill="none"
         />
+        {/* GEO: rx=225, ry=110, rotated 12deg. Two-arc full ellipse */}
         <path
           id="geoOrbitPath"
-          d="M 25,250 A 225,110 12 1,1 25,250.01"
-          transform="rotate(12 250 250)"
+          d="M 475,250 A 225,110 12 1,1 25,250 A 225,110 12 1,1 475,250"
           fill="none"
         />
+        {/* Polar: rx=170, ry=170, rotated 75deg (circle). Two-arc full ellipse */}
         <path
           id="polarOrbitPath"
-          d="M 80,250 A 170,170 75 1,1 80,250.01"
-          transform="rotate(75 250 250)"
+          d="M 420,250 A 170,170 0 1,1 80,250 A 170,170 0 1,1 420,250"
           fill="none"
         />
       </defs>

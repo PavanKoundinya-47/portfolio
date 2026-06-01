@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 import { profile } from '../data/profile';
 import { useViewportAnimation } from '../hooks/useViewportAnimation';
 
@@ -19,7 +20,7 @@ interface FormErrors {
   message?: string;
 }
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 function validateForm(data: FormData): FormErrors {
   const errors: FormErrors = {};
@@ -127,66 +128,69 @@ export default function ContactSection() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    const validationErrors = validateForm(formData);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+  const validationErrors = validateForm(formData);
 
-    setErrors({});
-    setFormState('submitting');
-    setErrorMessage('');
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+    return;
+  }
 
-    try {
-      // Try Formspree submission if endpoint is configured
-      const formspreeEndpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+  setErrors({});
+  setFormState('submitting');
+  setErrorMessage('');
 
-      if (formspreeEndpoint) {
-        const response = await fetch(formspreeEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            message: formData.message,
-          }),
-        });
+  try {
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-        if (!response.ok) {
-          throw new Error('Form submission failed');
-        }
-      } else {
-        // Mailto fallback
-        const subject = encodeURIComponent(
-          `Portfolio Contact from ${formData.name}`
-        );
-        const body = encodeURIComponent(
-          `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-        );
-        const emailLink = profile.socialLinks.find(
-          (link) => link.platform === 'email'
-        );
-        const emailAddress = emailLink
-          ? emailLink.url.replace('mailto:', '')
-          : '';
-        window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-      }
+    console.log('EmailJS Configuration', {
+      serviceId,
+      templateId,
+      publicKey: publicKey ? 'Present' : 'Missing',
+    });
 
-      setFormState('success');
-      setFormData({ name: '', email: '', message: '' });
-    } catch {
-      setFormState('error');
-      setErrorMessage(
-        'Something went wrong. Please try again or use the email link below.'
+    if (!serviceId || !templateId || !publicKey) {
+      throw new Error(
+        'EmailJS environment variables are missing.'
       );
     }
-  };
+
+    const response = await emailjs.send(
+      serviceId,
+      templateId,
+      {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: `Portfolio Contact from ${formData.name}`,
+        message: formData.message,
+      },
+      publicKey
+    );
+
+    console.log('EmailJS Success:', response);
+
+    setFormState('success');
+    setFormData({
+      name: '',
+      email: '',
+      message: '',
+    });
+  } catch (error: any) {
+    console.error('EmailJS Error:', error);
+
+    setFormState('error');
+
+    setErrorMessage(
+      error?.text ||
+        error?.message ||
+        'Something went wrong. Please try again.'
+    );
+  }
+};
 
   return (
     <section
