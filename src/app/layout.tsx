@@ -14,8 +14,10 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://PavanKoundinya-47.github.io/portfolio";
-
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://pavankoundinya-47.github.io/portfolio";
+  
 export const metadata: Metadata = {
   title: "Pavan Lanka | Software Development Engineer",
   description:
