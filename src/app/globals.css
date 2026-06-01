@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-space-bg: #020617;
+  --color-space-surface: #0F172A;
+  --color-space-accent: #3B82F6;
+  --color-space-accent-secondary: #8B5CF6;
+  --color-space-text: #E2E8F0;
+  --color-space-muted: #94A3B8;
+  --color-space-success: #10B981;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'Fira Code', monospace;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Mission Control Background Animations */
+@keyframes orbit-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-rotate-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes dash-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.animate-twinkle {
+  animation: twinkle var(--animate-twinkle-duration, 4s) ease-in-out infinite;
+}
+
+.animate-orbit-rotate {
+  animation: orbit-rotate 120s linear infinite;
+  transform-origin: 960px 540px;
+}
+
+.animate-orbit-rotate-slow {
+  animation: orbit-rotate 180s linear infinite;
+  transform-origin: 960px 540px;
+}
+
+.animate-orbit-rotate-reverse {
+  animation: orbit-rotate-reverse 200s linear infinite;
+  transform-origin: 960px 540px;
+}
+
+.animate-orbit-rotate-polar {
+  animation: orbit-rotate 150s linear infinite;
+  transform-origin: 960px 540px;
+}
+
+.animate-dash-flow {
+  animation: dash-flow 30s linear infinite;
+}
+
+.animate-dash-flow-slow {
+  animation: dash-flow 45s linear infinite;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #020617;
+  color: #E2E8F0;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1E293B #020617;
+}
+
+/* Global focus styles for accessibility - minimum 2px outline */
+:focus-visible {
+  outline: 2px solid #3B82F6;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default focus outline only when focus-visible is supported */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background-color: #3B82F6;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
