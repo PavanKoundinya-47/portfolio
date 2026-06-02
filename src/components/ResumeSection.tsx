@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { profile } from '../data/profile';
 import { useViewportAnimation } from '../hooks/useViewportAnimation';
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || 'https://pavankoundinya-47.github.io/portfolio';
 
 export default function ResumeSection() {
   const [pdfAvailable, setPdfAvailable] = useState<boolean | null>(null);

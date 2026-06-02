@@ -383,8 +383,8 @@ const nextConfig = {
   images: {
     unoptimized: true, // Required for static export
   },
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || 'https://pavankoundinya-47.github.io/portfolio',
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || 'https://pavankoundinya-47.github.io/portfolio',
 };
 
 export default nextConfig;
