@@ -3,6 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://pavankoundinya-47.github.io/portfolio";
+
 export default function SatelliteCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -93,7 +97,7 @@ export default function SatelliteCursor() {
 
       {/* Satellite dish PNG */}
       <img
-        src="/sattelite-dish.png"
+        src={`${siteUrl}/sattelite-dish.png`}
         alt=""
         width={24}
         height={24}
