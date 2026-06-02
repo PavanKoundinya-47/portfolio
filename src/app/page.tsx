@@ -1,4 +1,5 @@
 import MissionControlBackground from '../components/MissionControlBackground';
+import SatelliteCursor from '../components/SatelliteCursor';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import MissionBriefSection from '../components/MissionBriefSection';
@@ -13,6 +14,7 @@ import Footer from '../components/Footer';
 export default function Home() {
   return (
     <>
+      <SatelliteCursor />
       <MissionControlBackground />
       <Navigation />
       <main id="main-content">

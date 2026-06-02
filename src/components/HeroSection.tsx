@@ -412,7 +412,7 @@ const earthVariants = {
   },
 };
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || 'https://pavankoundinya-47.github.io/portfolio';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 
