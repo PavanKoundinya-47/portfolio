@@ -61,6 +61,7 @@ const PARALLAX_SPEEDS = {
   grid: 0.3,
   telemetry: 0.5,
   earth: 0.15,
+  planets: 0.25,
 };
 
 // ─── HELPER FUNCTIONS ───────────────────────────────────────────────────────────
@@ -159,6 +160,8 @@ export default function MissionControlBackground() {
     container.style.setProperty('--parallax-grid', `${scrollY * PARALLAX_SPEEDS.grid}px`);
     container.style.setProperty('--parallax-telemetry', `${scrollY * PARALLAX_SPEEDS.telemetry}px`);
     container.style.setProperty('--parallax-earth', `${scrollY * PARALLAX_SPEEDS.earth}px`);
+    container.style.setProperty('--parallax-planets', `${scrollY * PARALLAX_SPEEDS.planets}px`);
+    container.style.setProperty('--planets-rotation', `${scrollProgress * 360}deg`);
   }, []);
 
   useEffect(() => {
@@ -276,6 +279,8 @@ export default function MissionControlBackground() {
         '--parallax-grid': '0px',
         '--parallax-telemetry': '0px',
         '--parallax-earth': '0px',
+        '--parallax-planets': '0px',
+        '--planets-rotation': '0deg',
       } as React.CSSProperties}
     >
       {/* LAYER 1: Deep Space Gradient + Stars */}
@@ -586,61 +591,66 @@ function PlanetsLayer({ reducedMotion }: { reducedMotion: boolean }) {
           </radialGradient>
         </defs>
 
-        {/* Mars - small, reddish, bottom-right area */}
-        <g opacity="0.7">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0 0; 15 -8; 0 0"
-            dur={reducedMotion ? '0.001s' : '90s'}
-            repeatCount="indefinite"
-          />
-          <circle cx="1500" cy="750" r="12" fill="url(#marsGradient)" />
-          <ellipse cx="1500" cy="740" rx="6" ry="2" fill="#FDE8D0" opacity="0.3" />
-        </g>
+        {/* All planets orbit around the Sun (1764, 114) driven by scroll */}
+        <g style={{ transformOrigin: '1764px 114px', transform: 'rotate(var(--planets-rotation))' }}>
 
-        {/* Venus - yellowish, top-left area */}
-        <g opacity="0.6">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0 0; -10 12; 0 0"
-            dur={reducedMotion ? '0.001s' : '120s'}
-            repeatCount="indefinite"
-          />
-          <circle cx="350" cy="200" r="18" fill="url(#venusGradient)" />
-          <circle cx="350" cy="200" r="20" fill="none" stroke="#FDE68A" strokeWidth="1" opacity="0.2" />
-        </g>
+          {/* Mercury - closest to sun, orbit radius ~200px */}
+          <g opacity="0.6" style={{ transformOrigin: '1764px 114px', transform: 'rotate(20deg)' }}>
+            <circle cx="1564" cy="114" r="8" fill="#9CA3AF" />
+            <circle cx="1562" cy="112" r="2" fill="#6B7280" opacity="0.4" />
+          </g>
 
-        {/* Jupiter - largest, bottom-left */}
-        <g opacity="0.5">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0 0; 8 5; 0 0"
-            dur={reducedMotion ? '0.001s' : '150s'}
-            repeatCount="indefinite"
-          />
-          <circle cx="200" cy="850" r="35" fill="url(#jupiterGradient)" />
-          <ellipse cx="200" cy="840" rx="34" ry="4" fill="#A0754A" opacity="0.3" />
-          <ellipse cx="200" cy="852" rx="33" ry="3" fill="#7C5B3A" opacity="0.25" />
-          <ellipse cx="200" cy="862" rx="32" ry="3.5" fill="#A0754A" opacity="0.2" />
-          <ellipse cx="215" cy="855" rx="6" ry="4" fill="#C0522A" opacity="0.4" />
-        </g>
+          {/* Venus - orbit radius ~300px */}
+          <g opacity="0.6">
+            <circle cx="1464" cy="114" r="18" fill="url(#venusGradient)" />
+            <circle cx="1464" cy="114" r="20" fill="none" stroke="#FDE68A" strokeWidth="1" opacity="0.2" />
+          </g>
 
-        {/* Saturn - with rings, right side mid-height */}
-        <g opacity="0.5">
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            values="0 0; -12 -6; 0 0"
-            dur={reducedMotion ? '0.001s' : '180s'}
-            repeatCount="indefinite"
-          />
-          <circle cx="1650" cy="400" r="28" fill="url(#saturnGradient)" />
-          <ellipse cx="1650" cy="400" rx="50" ry="10" fill="none" stroke="#C9A96E" strokeWidth="3" opacity="0.4" />
-          <ellipse cx="1650" cy="400" rx="58" ry="12" fill="none" stroke="#A08040" strokeWidth="2" opacity="0.25" />
-          <ellipse cx="1650" cy="400" rx="44" ry="8" fill="none" stroke="#D4B878" strokeWidth="1.5" opacity="0.3" />
+          {/* Earth representation (small, showing our position) - orbit radius ~420px */}
+          <g opacity="0.5" style={{ transformOrigin: '1764px 114px', transform: 'rotate(80deg)' }}>
+            <circle cx="1344" cy="114" r="14" fill="#1E40AF" />
+            <circle cx="1344" cy="114" r="14" fill="none" stroke="#60A5FA" strokeWidth="0.8" opacity="0.4" />
+          </g>
+
+          {/* Mars - orbit radius ~550px */}
+          <g opacity="0.7" style={{ transformOrigin: '1764px 114px', transform: 'rotate(45deg)' }}>
+            <circle cx="1214" cy="114" r="12" fill="url(#marsGradient)" />
+            <ellipse cx="1214" cy="106" rx="6" ry="2" fill="#FDE8D0" opacity="0.3" />
+          </g>
+
+          {/* Jupiter - orbit radius ~800px */}
+          <g opacity="0.5" style={{ transformOrigin: '1764px 114px', transform: 'rotate(160deg)' }}>
+            <circle cx="964" cy="114" r="35" fill="url(#jupiterGradient)" />
+            <ellipse cx="964" cy="104" rx="34" ry="4" fill="#A0754A" opacity="0.3" />
+            <ellipse cx="964" cy="116" rx="33" ry="3" fill="#7C5B3A" opacity="0.25" />
+            <ellipse cx="964" cy="126" rx="32" ry="3.5" fill="#A0754A" opacity="0.2" />
+            <ellipse cx="979" cy="119" rx="6" ry="4" fill="#C0522A" opacity="0.4" />
+          </g>
+
+          {/* Saturn - orbit radius ~1100px */}
+          <g opacity="0.5" style={{ transformOrigin: '1764px 114px', transform: 'rotate(250deg)' }}>
+            <circle cx="664" cy="114" r="28" fill="url(#saturnGradient)" />
+            <ellipse cx="664" cy="114" rx="50" ry="10" fill="none" stroke="#C9A96E" strokeWidth="3" opacity="0.4" />
+            <ellipse cx="664" cy="114" rx="58" ry="12" fill="none" stroke="#A08040" strokeWidth="2" opacity="0.25" />
+            <ellipse cx="664" cy="114" rx="44" ry="8" fill="none" stroke="#D4B878" strokeWidth="1.5" opacity="0.3" />
+          </g>
+
+          {/* Uranus - orbit radius ~1400px */}
+          <g opacity="0.45" style={{ transformOrigin: '1764px 114px', transform: 'rotate(310deg)' }}>
+            <circle cx="364" cy="114" r="22" fill="#67E8F9" opacity="0.6" />
+            <circle cx="364" cy="114" r="22" fill="none" stroke="#22D3EE" strokeWidth="0.8" opacity="0.3" />
+            {/* Uranus faint ring */}
+            <ellipse cx="364" cy="114" rx="30" ry="4" fill="none" stroke="#67E8F9" strokeWidth="1" opacity="0.2" transform="rotate(80 364 114)" />
+          </g>
+
+          {/* Neptune - orbit radius ~1600px */}
+          <g opacity="0.4" style={{ transformOrigin: '1764px 114px', transform: 'rotate(190deg)' }}>
+            <circle cx="164" cy="114" r="20" fill="#3B82F6" opacity="0.7" />
+            <circle cx="164" cy="114" r="20" fill="none" stroke="#60A5FA" strokeWidth="0.8" opacity="0.3" />
+            {/* Neptune storm spot */}
+            <ellipse cx="170" cy="118" rx="4" ry="3" fill="#1D4ED8" opacity="0.5" />
+          </g>
+
         </g>
       </svg>
     </div>
