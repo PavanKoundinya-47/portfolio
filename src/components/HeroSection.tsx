@@ -150,8 +150,6 @@ const panelVariants = {
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || 'https://pavankoundinya-47.github.io/portfolio';
 
 // ─── Main Component ─────────────────────────────────────────────────────────
-more planets in the view please
-
 
 export default function HeroSection() {
   const prefersReducedMotion = useReducedMotion();
