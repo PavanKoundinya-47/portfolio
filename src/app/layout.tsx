@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ||
   "https://pavankoundinya-47.github.io/portfolio";
-  
+
 export const metadata: Metadata = {
   title: "Pavan Lanka | Software Development Engineer",
   description:
@@ -66,7 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrainsMono.variable} bg-[#020617] text-[#E2E8F0] antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} bg-[#030B1A] text-[#E2E8F0] antialiased`}
     >
       <head>
         <script

@@ -67,6 +67,7 @@ export default function Navigation() {
             {NAV_ITEMS.map((item) => {
               const sectionId = item.href.slice(1);
               const isActive = activeSection === sectionId;
+              const isContact = item.label === 'Contact';
               return (
                 <li key={item.href}>
                   <a
@@ -75,7 +76,9 @@ export default function Navigation() {
                     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                       isActive
                         ? 'text-space-accent bg-space-accent/10'
-                        : 'text-space-muted hover:text-space-text hover:bg-space-surface/50'
+                        : isContact
+                          ? 'text-gray-300 hover:text-space-text hover:bg-space-surface/50'
+                          : 'text-space-muted hover:text-space-text hover:bg-space-surface/50'
                     }`}
                   >
                     {item.label}
@@ -139,6 +142,7 @@ export default function Navigation() {
           {NAV_ITEMS.map((item) => {
             const sectionId = item.href.slice(1);
             const isActive = activeSection === sectionId;
+            const isContact = item.label === 'Contact';
             return (
               <li key={item.href}>
                 <a
@@ -147,7 +151,9 @@ export default function Navigation() {
                   className={`block px-3 py-3 min-h-[44px] flex items-center rounded-md text-base font-medium transition-colors duration-200 ${
                     isActive
                       ? 'text-space-accent bg-space-accent/10'
-                      : 'text-space-muted hover:text-space-text hover:bg-space-surface/50'
+                      : isContact
+                        ? 'text-gray-300 hover:text-space-text hover:bg-space-surface/50'
+                        : 'text-space-muted hover:text-space-text hover:bg-space-surface/50'
                   }`}
                 >
                   {item.label}
